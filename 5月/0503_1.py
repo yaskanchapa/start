@@ -14,6 +14,7 @@ GRID_HEIGHT = WINDOW_HEIGHT / GRID_SIZE
 WHITE = (255,255,255) # R G B최대값은 하얀색
 GREEN = (0 ,50 , 0)
 ORANGE = (250, 150, 0)
+GRAY = (100,100,100)
 
 # 움직임 x,y 좌표로 준다
 UP = (0,-1) # y는 그럼 +1 아닌가 ? pygame 라이브러리에서 이렇게 지정해놓은건가 ?
@@ -76,6 +77,13 @@ def check_eat(python,feed):# 먹이를 먹었을 경우를 체크필요
         python.eat() # 먹이 먹었으니 먹이가 없어짐
         feed.create() # 먹이 다시 생성해줘
 
+def show_info(length,speed,surface): # 정보창
+    font = pygame.font.Font(None,34)
+    text = font.render("Length:"+str(length) + "    Speed:" + str(round(speed,2)),1,GRAY) # render->랜더링 speed->나누기2 했었으니까 ,2 round는 반올림 한다는 소리
+    pos = text.get_rect()
+    pos.centerx = 150
+    surface.blit(text,pos)
+
 if __name__ == '__main__': # 내가 현재 작업하는게 메인페이지 일 경우란 뜻
     python = Python() # Python이란 객체 만들기
     feed = Feed() # Feed란 객체 만들기
@@ -112,6 +120,7 @@ while True:
     speed = (FPS + python.length) / 2  #먹이 먹었다면 길이 늘어나면서 스피드 UP (스피드임의조절위해서 /2)
     python.draw(surface)
     feed.draw(surface)
+    show_info(python.length,speed,surface) #먹이를 먹고나서 정보창이 수정되야되기 때문에 이자리에 둠
     window.blit(surface,(0,0))
     pygame.display.flip() # 플립 해줘야됨
     pygame.display.update() # 업데이트 해줘야됨
